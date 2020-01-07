@@ -15,7 +15,7 @@
 
       <v-flex mb-4>
         <h1 class="display-2 font-weight-bold mb-3">
-          Welcome to Vuetify
+          Welcome to Vuetify2
         </h1>
         <p class="subheading font-weight-regular">
           For help and collaboration with other Vuetify developers,
@@ -83,7 +83,19 @@
     </v-layout>
   </v-container>
 </template>
-
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped lang="scss">
+.maincontents {
+  h1 {
+    margin-top:-70px;
+    padding-top: 70px;
+  }
+}
+/*背景色*/
+.backcolor {
+/*  background-color: black;*/
+}
+</style>
 <script>
 export default {
   name: 'HelloWorld',
