@@ -7,7 +7,6 @@ module.exports = {
   // webpack.config.js の設定はここに書く
   configureWebpack: {
     optimization: {
-      minimize: true,
       minimizer: [
         new TerserPlugin({
           terserOptions: {
