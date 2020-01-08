@@ -3,6 +3,7 @@ module.exports = {
   transpileDependencies: [
     'vuetify',
   ],
+
   // webpack.config.js の設定はここに書く
   configureWebpack: {
     optimization: {
@@ -21,4 +22,9 @@ module.exports = {
       ],
     },
   },
+
+  css: {
+    // 本番以外はcss sourceMapを有効にする
+    sourceMap: process.env.NODE_ENV === 'production' ? false : true,
+  }
 };
