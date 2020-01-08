@@ -8,8 +8,10 @@ module.exports = {
     '@vue/airbnb',
   ],
   rules: {
-    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    // console, debuggerは書いて良い(build時に消す設定にしているので)
+    'no-console': 'off',
+    'no-debugger': 'off',
+//    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
   },
   parserOptions: {
     parser: 'babel-eslint',
