@@ -85,6 +85,10 @@
 </template>
 
 <script>
+import axios from 'axios';
+
+console.log('HelloWorld start');
+
 export default {
   name: 'HelloWorld',
 
@@ -108,37 +112,22 @@ export default {
         text: 'Documentation',
         href: 'https://vuetifyjs.com',
       },
-      {
-        text: 'Chat',
-        href: 'https://community.vuetifyjs.com',
-      },
-      {
-        text: 'Made with Vuetify',
-        href: 'https://madewithvuejs.com/vuetify',
-      },
-      {
-        text: 'Twitter',
-        href: 'https://twitter.com/vuetifyjs',
-      },
-      {
-        text: 'Articles',
-        href: 'https://medium.com/vuetify',
-      },
     ],
     whatsNext: [
-      {
-        text: 'Explore components',
-        href: 'https://vuetifyjs.com/components/api-explorer',
-      },
-      {
-        text: 'Select a layout',
-        href: 'https://vuetifyjs.com/layout/pre-defined',
-      },
-      {
-        text: 'Frequently Asked Questions',
-        href: 'https://vuetifyjs.com/getting-started/frequently-asked-questions',
-      },
+      {},
     ],
   }),
+  mounted() {
+    console.log(`${this.$vnode.componentOptions.tag} : mounted start`);
+    axios.get('https://mysterious-ocean-57311.herokuapp.com/analize.json?host=https%3A%2F%2Fgithub.com&token=password')
+      .then((response) => {
+      // 処理成功2xx時のコールバック
+        console.log(response.data);
+      })
+      .catch((error) => {
+        // 処理失敗!not2xx時のコールバック
+        console.err(error);
+      });
+  },
 };
 </script>

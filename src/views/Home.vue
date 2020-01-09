@@ -7,6 +7,7 @@
 <script>
 import HelloWorld from '../components/HelloWorld.vue';
 
+console.log('Home start');
 export default {
   name: 'home',
   components: {
