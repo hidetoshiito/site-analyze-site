@@ -1,0 +1,52 @@
+{
+  "workbench.iconTheme": "vs-seti",
+  "editor.tabSize": 2,
+  "editor.wordWrap": "on",
+  "editor.renderControlCharacters": true,
+  "files.eol": "\n",
+  "files.trimTrailingWhitespace": true,
+  "files.trimFinalNewlines": true,
+  "files.insertFinalNewline": true,
+  "breadcrumbs.enabled": true,
+  "files.associations": {
+    ".*lintrc": "json"
+  },
+  "search.exclude": {
+    "**/.history": true,
+    "**/.idea": true,
+    "**/.sass-cache": true,
+    "**/.vscode": true,
+    "**/.git": true,
+    "**/.svn": true,
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/tmp": true
+  },
+  "emmet.variables": {
+    "lang": "ja"
+  },
+  "emmet.showAbbreviationSuggestions": true,
+  "emmet.showExpandedAbbreviation": "always",
+  "emmet.includeLanguages": {
+    "vue-html": "html",
+    "vue": "html"
+  },
+  "[markdown]": {
+    "files.trimTrailingWhitespace": false
+  },
+  // デフォルトのコード整形の無効化とESLint 自動フォーマットの有効化
+  "editor.formatOnSave": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.fixAll.tslint": true,
+    "source.fixAll": true,
+  },
+  // ESLintの設定
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "vue",
+    "vue-html",
+    "html",
+  ],
+}
