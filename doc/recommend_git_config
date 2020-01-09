@@ -1,0 +1,13 @@
+[core]
+	autocrlf = false
+	quotepath = false
+[merge]
+	ff = false
+[pull]
+	ff = only
+[alias]
+  br = branch
+  st = status
+  co = checkout
+  # 
+  gr = log --graph --date=short --decorate=short --pretty=format:'%Cgreen%h %Creset%cd %Cblue%cn %Cred%d %Creset%s'
