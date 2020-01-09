@@ -1,4 +1,5 @@
 const TerserPlugin = require('terser-webpack-plugin');
+
 module.exports = {
   transpileDependencies: [
     'vuetify',
@@ -13,18 +14,18 @@ module.exports = {
           terserOptions: {
             compress: {
               // 本番はconsole.logを削除する
-              drop_console: process.env.NODE_ENV === 'production' ? true : false,
+              drop_console: process.env.NODE_ENV === 'production',
               // 本番はdebuggerを削除する
-              drop_debugger: process.env.NODE_ENV === 'production' ? true : false,
-            }
-          }
-        })
+              drop_debugger: process.env.NODE_ENV === 'production',
+            },
+          },
+        }),
       ],
     },
   },
 
   css: {
     // 本番以外はcss sourceMapを有効にする
-    sourceMap: process.env.NODE_ENV === 'production' ? false : true,
-  }
+    sourceMap: process.env.NODE_ENV !== 'production',
+  },
 };
