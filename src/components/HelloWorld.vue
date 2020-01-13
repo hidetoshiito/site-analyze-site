@@ -24,9 +24,10 @@
         </p>
         <v-text-field
           v-model="target_site"
-          label="診断サイト"
-          hint="診断するサイトURLを入力してください 例: https://int-inc.jp"
-          outlined=true
+          :label="fld_site.label"
+          :hint="fld_site.hint"
+          :outlined="fld_site.outlined"
+          :clearable="fld_site.clearable"
         >
         </v-text-field>
         <v-btn :loading="loading" :disabled="loading" @click="analyze()" color="success">
@@ -108,7 +109,13 @@ export default {
     loading: false,
     result_status: '',
     result_data: '',
-    target_site: 'https://',
+    target_site: 'https://int-inc.jp',
+    fld_site: { // 診断サイトfieldの設定
+      label: '診断サイト',
+      hint: '診断するサイトURLを入力してください 例: https://int-inc.jp',
+      outlined: true,
+      clearable: true,
+    },
     ecosystem: [
       {
         text: 'vuetify-loader',
