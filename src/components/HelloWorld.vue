@@ -22,6 +22,19 @@
           <br>please join our online
           <a href="https://community.vuetifyjs.com" target="_blank">Discord Community</a>
         </p>
+        <v-text-field
+          v-model="target_site"
+          :label="fld_site.label"
+          :hint="fld_site.hint"
+          :outlined="fld_site.outlined"
+          :clearable="fld_site.clearable"
+        >
+        </v-text-field>
+        <v-btn :loading="loading" :disabled="loading" @click="analyze()" color="success">
+          診断
+        </v-btn>
+        <p>{{result_status}}</p>
+        <p>{{result_data}}</p>
       </v-flex>
 
       <v-flex
@@ -93,6 +106,16 @@ export default {
   name: 'HelloWorld',
 
   data: () => ({
+    loading: false,
+    result_status: '',
+    result_data: '',
+    target_site: 'https://int-inc.jp',
+    fld_site: { // 診断サイトfieldの設定
+      label: '診断サイト',
+      hint: '診断するサイトURLを入力してください 例: https://int-inc.jp',
+      outlined: true,
+      clearable: true,
+    },
     ecosystem: [
       {
         text: 'vuetify-loader',
@@ -119,16 +142,7 @@ export default {
   }),
   mounted() {
     console.log(`${this.$vnode.componentOptions.tag} : mounted start`);
-    axios.get('https://mysterious-ocean-57311.herokuapp.com/analize.json?host=https%3A%2F%2Fgithub.com&token=password')
-      .then((response) => {
-      // 処理成功2xx時のコールバック
-        console.log(response.data);
-      })
-      .catch((error) => {
-        // 処理失敗!not2xx時のコールバック
-        console.err(error);
-      });
-
+/*
     axios.get('https://http-observatory.security.mozilla.org/api/v1/analyze?host=www.mozilla.org')
       .then((response) => {
       // 処理成功2xx時のコールバック
@@ -138,6 +152,28 @@ export default {
         // 処理失敗!not2xx時のコールバック
         console.err(error);
       });
+*/
+  },
+  methods: {
+    // 診断ボタン押下時の処理
+    analyze() {
+      console.log('method analyze start');
+      this.loading = true;
+      axios.get(`https://mysterious-ocean-57311.herokuapp.com/analize.json?host=${this.target_site}&token=password`)
+        .then((response) => {
+          // 処理成功2xx時のコールバック
+          console.dir(response.data);
+          this.result_status = response.data.status;
+          this.result_data = response.data.analize_names;
+          this.loading = false;
+        })
+        .catch((error) => {
+          // 処理失敗!not2xx時のコールバック
+          console.err(error);
+          this.result_status = 'エラー';
+          this.loading = false;
+        });
+    },
   },
 };
 </script>
