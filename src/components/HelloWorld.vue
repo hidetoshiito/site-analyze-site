@@ -128,6 +128,16 @@ export default {
         // 処理失敗!not2xx時のコールバック
         console.err(error);
       });
+
+    axios.get('https://http-observatory.security.mozilla.org/api/v1/analyze?host=www.mozilla.org')
+      .then((response) => {
+      // 処理成功2xx時のコールバック
+        console.log(response.data);
+      })
+      .catch((error) => {
+        // 処理失敗!not2xx時のコールバック
+        console.err(error);
+      });
   },
 };
 </script>
