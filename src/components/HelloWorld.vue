@@ -73,15 +73,6 @@ export default {
   mounted() {
     console.log(`${this.$vnode.componentOptions.tag} : mounted start`);
     /*
-    axios.post('https://http-observatory.security.mozilla.org/api/v1/analyze?host=www.mozilla.org')
-      .then((response) => {
-      // 処理成功2xx時のコールバック
-        console.log(response.data);
-      })
-      .catch((error) => {
-        // 処理失敗!not2xx時のコールバック
-        console.err(error);
-      });
     */
   },
   methods: {
@@ -89,6 +80,7 @@ export default {
     analyze() {
       console.log('method analyze start');
       this.loading_member.nakcat = true;
+      this.loading_member.mozilla = true;
       axios.get(`https://mysterious-ocean-57311.herokuapp.com/analize.json?host=${this.target_site}&token=password`)
         .then((response) => {
           // 処理成功2xx時のコールバック
@@ -102,6 +94,31 @@ export default {
           this.result_member.nakcat = { msg: 'エラー' };
           this.loading_member.nakcat = false;
         });
+      const hostname = this.getHostName(this.target_site);
+      // const hostname = hostnames[1];
+      // axios.post(`https://http-observatory.security.mozilla.org/api/v1/analyze?host=${hostname}`)
+      axios.get(`https://http-observatory.security.mozilla.org/api/v1/analyze?host=${hostname}`)
+        .then((response) => {
+          // 処理成功2xx時のコールバック
+          console.dir(response.data);
+          this.result_member.mozilla = response.data;
+          this.loading_member.mozilla = false;
+        })
+        .catch((error) => {
+          // 処理失敗!not2xx時のコールバック
+          console.err(error);
+          this.result_member.mozilla = { msg: 'エラー' };
+          this.loading_member.mozilla = false;
+        });
+    },
+    // URLからホスト名の取得
+    getHostName(url) {
+      console.log('method getHostName start');
+      const ret = url.replace(/\\/g, '/').match(/\/\/([^/]*)/);
+      if (ret == null || ret.length < 2) {
+        return '';
+      }
+      return ret[1];
     },
   },
 };
