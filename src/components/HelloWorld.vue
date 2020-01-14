@@ -26,10 +26,10 @@
           <p>nakcat's result</p>
           <p>{{result_member.nakcat}}</p>
         </div>
-        <div v-if="loading_member.mozilla != null">
+        <div v-if="loading_member.mozilla">
           <p><v-progress-circular color="primary" indeterminate></v-progress-circular> mozilla's scaning ...</p>
         </div>
-        <div v-else-if="result_member.mozilla">
+        <div v-else-if="result_member.mozilla != null">
           <p>mozilla's result</p>
           <p>{{result_member.mozilla}}</p>
         </div>
