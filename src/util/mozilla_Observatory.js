@@ -21,16 +21,20 @@ export default class MozillaObservatory {
         console.log('scan済みの場合は結果サマリを取得する');
         this.setScanSummary(preRes.data);
         console.dir(this);
-        console.log('scan済みの場合はscanidから結果を取得する');
-        console.log(`ID : ${this.resultdata.scan_id}`);
-        const res = await axios.get(`https://http-observatory.security.mozilla.org/api/v1/getScanResults?scan=${this.resultdata.scan_id}`);
-        console.log('結果詳細を取得する');
-        this.resdata = res;
       } else {
-        console.log('TODO: 未scanの場合はscanを実施する');
-        console.log('TODO: scan完了まで待つ');
-        console.log('TODO: scan結果を取得する');
+        console.log('未scanの場合はscanを実施する');
+        const newres = await axios.post(`https://http-observatory.security.mozilla.org/api/v1/analyze?host=${this.host}`);
+        console.dir(newres);
+        console.log('現時点のscan結果を取得する');
+        this.setScanSummary(preRes.data);
       }
+      console.log('scanidから詳細結果を取得する');
+      console.log(`ID : ${this.resultdata.scan_id}`);
+      const res = await axios.get(`https://http-observatory.security.mozilla.org/api/v1/getScanResults?scan=${this.resultdata.scan_id}`);
+      console.log('TODO: scan完了まで待つ');
+      console.log('TODO: scan結果を取得する');
+      console.log('結果詳細を取得する');
+      this.resdata = res;
       return this.resdata; // resolveで返る
     } catch (error) {
       console.error(error);
