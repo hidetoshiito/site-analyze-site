@@ -32,6 +32,15 @@
         <div v-else-if="mozilla_summary != null">
           <p>mozilla's result</p>
           <p>{{mozilla_summary}}</p>
+          <v-card v-for="(value,key) in mozilla_results" :key="value.name">
+            <v-list-item three-line>
+              <v-list-item-content>
+                <div class="overline mb-4">{{key}}</div>
+                <v-list-item-title class="headline mb-1">SCORE : {{value.score_modifier}}</v-list-item-title>
+                <v-list-item-subtitle>理由: {{value.score_description}}</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </v-card>
         </div>
       </v-flex>
     </v-layout>
@@ -51,7 +60,7 @@ export default {
     loading_member: { nakcat: false, mozilla: false },
     nakcat_results: [],
     mozilla_summary: {},
-    mozilla_results: [],
+    mozilla_results: {},
     target_site: 'https://int-inc.jp',
     fld_site: { // 診断サイトfieldの設定
       label: '診断サイト',
@@ -92,11 +101,14 @@ export default {
           this.nakcat_results = { msg: 'エラー' };
           this.loading_member.nakcat = false;
         });
+      // Mozilla Observatoryの情報取得
       const hostname = this.getHostName(this.target_site);
-      const mozilla = new MozillaObservatory({ host: hostname, msg: 'aaa' });
-      mozilla.run().then((resdata) => {
-        console.log(`Val : ${resdata}`);
+      const mozilla = new MozillaObservatory({ host: hostname });
+      mozilla.run().then(() => {
+        console.log('Mozilla Observatoryの取得結果 : ');
+        console.dir(mozilla);
         this.mozilla_summary = mozilla.resultsummary;
+        this.mozilla_results = mozilla.resultdatas;
         this.loading_member.mozilla = false;
       }).catch((error) => {
         console.error(error);

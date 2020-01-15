@@ -7,6 +7,9 @@ export default class MozillaObservatory {
     this.resultsummary = {
       algorithm_version: 0, end_time: '', scan_id: 0, grade: '', score: 0, tests_failed: 0, tests_passed: 0, tests_quantity: 0,
     };
+    this.resultdatas = [{
+      algorithm_version: 0, end_time: '', scan_id: 0, grade: '', score: 0, tests_failed: 0, tests_passed: 0, tests_quantity: 0,
+    }];
   }
 
   // MozillaObservatoryのチェック処理
@@ -34,8 +37,8 @@ export default class MozillaObservatory {
       console.dir(res);
       console.log('TODO: scan完了まで待つ');
       console.log('TODO: scan結果を取得する');
-      this.resdata = res.data;
-      return this.resdata; // resolveで返す
+      this.resultdatas = res.data;
+      return this.resultdatas; // resolveで返す
     } catch (error) {
       console.error(error);
       throw new Error(`[MozillaObservatory run] ${error}`); // rejectで返る
