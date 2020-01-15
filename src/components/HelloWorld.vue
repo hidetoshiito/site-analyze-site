@@ -22,16 +22,16 @@
         <div v-if="loading_member.nakcat">
           <p><v-progress-circular color="primary" indeterminate></v-progress-circular> nakcat's scaning ...</p>
         </div>
-        <div v-else-if="result_member.nakcat != null">
+        <div v-else-if="nakcat_results != null">
           <p>nakcat's result</p>
-          <p>{{result_member.nakcat}}</p>
+          <p>{{nakcat_results}}</p>
         </div>
         <div v-if="loading_member.mozilla">
           <p><v-progress-circular color="primary" indeterminate></v-progress-circular> mozilla's scaning ...</p>
         </div>
-        <div v-else-if="result_member.mozilla != null">
+        <div v-else-if="mozilla_summary != null">
           <p>mozilla's result</p>
-          <p>{{result_member.mozilla}}</p>
+          <p>{{mozilla_summary}}</p>
         </div>
       </v-flex>
     </v-layout>
@@ -49,7 +49,9 @@ export default {
 
   data: () => ({
     loading_member: { nakcat: false, mozilla: false },
-    result_member: { nakcat: null, mozilla: null },
+    nakcat_results: [],
+    mozilla_summary: {},
+    mozilla_results: [],
     target_site: 'https://int-inc.jp',
     fld_site: { // 診断サイトfieldの設定
       label: '診断サイト',
@@ -81,24 +83,24 @@ export default {
         .then((response) => {
           // 処理成功2xx時のコールバック
           console.dir(response.data);
-          this.result_member.nakcat = response.data;
+          this.nakcat_results = response.data;
           this.loading_member.nakcat = false;
         })
         .catch((error) => {
           // 処理失敗!not2xx時のコールバック
           console.err(error);
-          this.result_member.nakcat = { msg: 'エラー' };
+          this.nakcat_results = { msg: 'エラー' };
           this.loading_member.nakcat = false;
         });
       const hostname = this.getHostName(this.target_site);
       const mozilla = new MozillaObservatory({ host: hostname, msg: 'aaa' });
       mozilla.run().then((resdata) => {
         console.log(`Val : ${resdata}`);
-        this.result_member.mozilla = mozilla.resultdata;
+        this.mozilla_summary = mozilla.resultsummary;
         this.loading_member.mozilla = false;
       }).catch((error) => {
         console.error(error);
-        this.result_member.mozilla = { msg: 'システムエラー' };
+        this.mozilla_summary = { msg: 'システムエラー' };
         this.loading_member.mozilla = false;
       });
     },

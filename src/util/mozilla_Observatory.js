@@ -4,7 +4,7 @@ export default class MozillaObservatory {
   constructor(confObj) {
     console.log('MozillaObservatory constructor');
     this.host = confObj.host;
-    this.resultdata = {
+    this.resultsummary = {
       algorithm_version: 0, end_time: '', scan_id: 0, grade: '', score: 0, tests_failed: 0, tests_passed: 0, tests_quantity: 0,
     };
   }
@@ -29,13 +29,13 @@ export default class MozillaObservatory {
         this.setScanSummary(preRes.data);
       }
       console.log('scanidから詳細結果を取得する');
-      console.log(`ID : ${this.resultdata.scan_id}`);
-      const res = await axios.get(`https://http-observatory.security.mozilla.org/api/v1/getScanResults?scan=${this.resultdata.scan_id}`);
+      console.log(`ID : ${this.resultsummary.scan_id}`);
+      const res = await axios.get(`https://http-observatory.security.mozilla.org/api/v1/getScanResults?scan=${this.resultsummary.scan_id}`);
+      console.dir(res);
       console.log('TODO: scan完了まで待つ');
       console.log('TODO: scan結果を取得する');
-      console.log('結果詳細を取得する');
-      this.resdata = res;
-      return this.resdata; // resolveで返る
+      this.resdata = res.data;
+      return this.resdata; // resolveで返す
     } catch (error) {
       console.error(error);
       throw new Error(`[MozillaObservatory run] ${error}`); // rejectで返る
@@ -43,8 +43,8 @@ export default class MozillaObservatory {
   }
 
   setScanSummary(resdata) {
-    Object.keys(this.resultdata).forEach((key) => {
-      this.resultdata[key] = resdata[key];
+    Object.keys(this.resultsummary).forEach((key) => {
+      this.resultsummary[key] = resdata[key];
     });
   }
 }
