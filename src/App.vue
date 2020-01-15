@@ -1,13 +1,12 @@
 <template>
   <v-app>
-    <v-app-bar app color="indigo" dark>
+    <v-app-bar app :absolute="true" color="indigo" dark>
       <v-toolbar-title>サイト診断サイト</v-toolbar-title>
     </v-app-bar>
-
     <v-content>
       <router-view />
     </v-content>
-    <v-footer app padless color="indigo">
+    <v-footer app :absolute="true" color="indigo">
       <v-row justify="center" no-gutters>
         <v-btn
           v-for="(link, i) in links"

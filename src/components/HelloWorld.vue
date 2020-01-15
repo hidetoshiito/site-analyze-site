@@ -40,6 +40,7 @@
 
 <script>
 import axios from 'axios';
+import MozillaObservatory from '@/util/mozilla_Observatory';
 
 console.log('HelloWorld start');
 
@@ -90,21 +91,16 @@ export default {
           this.loading_member.nakcat = false;
         });
       const hostname = this.getHostName(this.target_site);
-      // const hostname = hostnames[1];
-      // axios.post(`https://http-observatory.security.mozilla.org/api/v1/analyze?host=${hostname}`)
-      axios.get(`https://http-observatory.security.mozilla.org/api/v1/analyze?host=${hostname}`)
-        .then((response) => {
-          // 処理成功2xx時のコールバック
-          console.dir(response.data);
-          this.result_member.mozilla = response.data;
-          this.loading_member.mozilla = false;
-        })
-        .catch((error) => {
-          // 処理失敗!not2xx時のコールバック
-          console.err(error);
-          this.result_member.mozilla = { msg: 'エラー' };
-          this.loading_member.mozilla = false;
-        });
+      const mozilla = new MozillaObservatory({ host: hostname, msg: 'aaa' });
+      mozilla.run().then((resdata) => {
+        console.log(`Val : ${resdata}`);
+        this.result_member.mozilla = mozilla.resultdata;
+        this.loading_member.mozilla = false;
+      }).catch((error) => {
+        console.error(error);
+        this.result_member.mozilla = { msg: 'システムエラー' };
+        this.loading_member.mozilla = false;
+      });
     },
     // URLからホスト名の取得
     getHostName(url) {
