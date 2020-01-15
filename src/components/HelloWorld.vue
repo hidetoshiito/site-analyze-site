@@ -61,13 +61,8 @@ export default {
     // nakcat mozilla すべてのスキャンが終わったか？
     loading_all() {
       console.log('loading_all start');
-      // true(＝loading中)があるか？
-      const ret = Object.keys(this.loading_member).filter(key => this.loading_member[key] === true);
-      console.log(ret);
-      if (ret.length > 0) {
-        return true;
-      }
-      return false;
+      // Valueがloading中(ture)の要素があるか？
+      return Object.values(this.loading_member).includes(true);
     },
   },
   mounted() {
