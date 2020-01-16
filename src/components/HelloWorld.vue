@@ -69,9 +69,6 @@ export default {
     fld_summary: {
       raised: true, // 影あり
       elevation: 10, // 影の量
-      // color: {
-      //   A: 'light-blue', B: 'pink', C: 'red', D: 'blue', E: 'yellow', F: 'purple',
-      // },
     },
     fld_site: { // 診断サイトfieldの設定
       label: '診断サイト',
@@ -90,6 +87,7 @@ export default {
     // 結果Gradeによって表示色を変更
     grade_color() {
       console.log('grade_color start');
+      // TODO: 適した色を考える
       const color = {
         A: 'light-blue', B: 'pink', C: 'red', D: 'blue', E: 'yellow', F: 'purple',
       };
