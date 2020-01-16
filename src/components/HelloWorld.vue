@@ -31,11 +31,15 @@
         </div>
         <div v-else-if="mozilla_summary != null">
           <p>mozilla's result</p>
-          <p>{{mozilla_summary}}</p>
+          <v-card :raised="fld_summary.raised" :elevation="fld_summary.elevation" :color="grade_color" >
+            <v-list-item>
+                <v-list-item-title class="display-2 font-weight-bold">RANK : {{mozilla_summary.grade}}</v-list-item-title>
+            </v-list-item>
+          </v-card>
           <v-card v-for="(value,key) in mozilla_results" :key="value.name">
             <v-list-item three-line>
               <v-list-item-content>
-                <div class="overline mb-4">{{key}}</div>
+                <div class="overline mb-4">診断名: {{key}}</div>
                 <v-list-item-title class="headline mb-1">SCORE : {{value.score_modifier}}</v-list-item-title>
                 <v-list-item-subtitle>理由: {{value.score_description}}</v-list-item-subtitle>
               </v-list-item-content>
@@ -58,10 +62,17 @@ export default {
 
   data: () => ({
     loading_member: { nakcat: false, mozilla: false },
-    nakcat_results: [],
-    mozilla_summary: {},
+    nakcat_results: null,
+    mozilla_summary: null,
     mozilla_results: {},
     target_site: 'https://int-inc.jp',
+    fld_summary: {
+      raised: true, // 影あり
+      elevation: 10, // 影の量
+      // color: {
+      //   A: 'light-blue', B: 'pink', C: 'red', D: 'blue', E: 'yellow', F: 'purple',
+      // },
+    },
     fld_site: { // 診断サイトfieldの設定
       label: '診断サイト',
       hint: '診断するサイトURLを入力してください 例: https://int-inc.jp',
@@ -75,6 +86,16 @@ export default {
       console.log('loading_all start');
       // Valueがloading中(ture)の要素があるか？
       return Object.values(this.loading_member).includes(true);
+    },
+    // 結果Gradeによって表示色を変更
+    grade_color() {
+      console.log('grade_color start');
+      const color = {
+        A: 'light-blue', B: 'pink', C: 'red', D: 'blue', E: 'yellow', F: 'purple',
+      };
+      // A+, D- みたいな表記もあるのでアルファベットのみにする
+      const gradeChr = this.mozilla_summary.grade.substring(0, 1);
+      return color[gradeChr];
     },
   },
   mounted() {
