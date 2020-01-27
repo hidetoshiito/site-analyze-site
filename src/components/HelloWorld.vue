@@ -24,6 +24,22 @@
         </div>
         <div v-else-if="nakcat_results != null">
           <p>nakcat's result</p>
+          <!-- 結果サマリ -->
+          <v-card :raised="fld_summary.raised" :elevation="fld_summary.elevation" :color="grade_color_nakcat" >
+            <v-list-item>
+                <v-list-item-title class="display-2 font-weight-bold">SCORE : {{nakcat_results.status.total_score}}</v-list-item-title>
+            </v-list-item>
+          </v-card>
+          <!-- 結果詳細 -->
+          <v-card v-for="(item, index) in nakcat_results.raw_data" :key="index">
+            <v-list-item three-line>
+              <v-list-item-content>
+                <div class="overline mb-4">診断箇所: {{item.name}}</div>
+                <v-list-item-title class="headline mb-1">SCORE : {{item.score_modifier}}</v-list-item-title>
+                <v-list-item-subtitle>取得結果: {{item.values}}</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </v-card>
           <p>{{nakcat_results}}</p>
         </div>
         <div v-if="loading_member.mozilla">
@@ -31,17 +47,17 @@
         </div>
         <div v-else-if="mozilla_summary != null">
           <p>mozilla's result</p>
-          <v-card :raised="fld_summary.raised" :elevation="fld_summary.elevation" :color="grade_color" >
+          <v-card :raised="fld_summary.raised" :elevation="fld_summary.elevation" :color="grade_color_mozilla" >
             <v-list-item>
                 <v-list-item-title class="display-2 font-weight-bold">RANK : {{mozilla_summary.grade}}</v-list-item-title>
             </v-list-item>
           </v-card>
           <v-card v-for="(value,key) in mozilla_results" :key="value.name">
-            <v-list-item three-line>
-              <v-list-item-content>
-                <div class="overline mb-4">診断名: {{key}}</div>
-                <v-list-item-title class="headline mb-1">SCORE : {{value.score_modifier}}</v-list-item-title>
-                <v-list-item-subtitle>理由: {{value.score_description}}</v-list-item-subtitle>
+            <v-list-item three-line class="vlist_base" :class="getClassOnScore(value.score_modifier)">
+              <v-list-item-content class="vlist_content">
+                <div class="headline mb-1">{{key}}</div>
+                <v-list-item-title class=" mb-1">SCORE : {{value.score_modifier}}</v-list-item-title>
+                <v-list-item-subtitle>{{value.score_description}}</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </v-card>
@@ -50,6 +66,24 @@
     </v-layout>
   </v-container>
 </template>
+
+<style scoped lang="scss">
+.bg-good {
+  background-color:deepskyblue;
+}
+.bg-bad {
+  background-color:pink;
+}
+/* v-listのベース。左端のみ結果に応じた色付けを行うため左のみpadding */
+.vlist_base {
+  padding: 0 0 0 5px;
+}
+/* v-listのメイン */
+.vlist_content {
+  background-color:white;
+}
+
+</style>
 
 <script>
 import axios from 'axios';
@@ -85,13 +119,20 @@ export default {
       return Object.values(this.loading_member).includes(true);
     },
     // 結果Gradeによって表示色を変更
-    grade_color() {
-      console.log('grade_color start');
+    grade_color_nakcat() {
+      console.log('grade_color_nakcat start');
+      return null;
+    },
+    grade_color_mozilla() {
+      console.log('grade_color_mozilla start');
       // TODO: 適した色を考える
       const color = {
         A: 'light-blue', B: 'pink', C: 'red', D: 'blue', E: 'yellow', F: 'purple',
       };
       // A+, D- みたいな表記もあるのでアルファベットのみにする
+      if (this.mozilla_summary.grade == null) {
+        return null;
+      }
       const gradeChr = this.mozilla_summary.grade.substring(0, 1);
       return color[gradeChr];
     },
@@ -143,6 +184,16 @@ export default {
         return '';
       }
       return ret[1];
+    },
+    // 結果詳細のスコアに応じて色付け用のCSSクラス名を返す
+    getClassOnScore(score) {
+      console.log('method getClassOnScore start');
+      if (score > 0) {
+        return 'bg-good';
+      } if (score < 0) {
+        return 'bg-bad';
+      }
+      return '';
     },
   },
 };
