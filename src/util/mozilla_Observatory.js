@@ -15,12 +15,28 @@ export default class MozillaObservatory {
     console.log('MozillaObservatory run');
     try {
       console.log('最初に対象ホストがscan済みかチェックする');
-      const preRes = await axios.get(`https://http-observatory.security.mozilla.org/api/v1/analyze?host=${this.host}`);
+      let preRes = await axios.get(`https://http-observatory.security.mozilla.org/api/v1/analyze?host=${this.host}`);
       console.log('プレ処理結果 : ');
       console.dir(preRes.data);
       // TODO: 仮
       // preRes.data.scan_id = null;
       if (preRes.data.scan_id) {
+        // stateがPENDINGなら完了するまで待つ
+        if (preRes.data.state !== 'FINISHED') {
+          for (let i = 0; ;i += 1) {
+            console.log('PENDINGなら待つ');
+            // eslint-disable-next-line no-await-in-loop
+            await new Promise(r => setTimeout(r, 15000));
+            // eslint-disable-next-line no-await-in-loop
+            preRes = await axios.get(`https://http-observatory.security.mozilla.org/api/v1/analyze?host=${this.host}`);
+            if (preRes.data.state === 'FINISHED') {
+              break;
+            }
+            if (i === 5) {
+              throw new Error('TimeOut Error! Mozillaチェックが完了しませんでした');
+            }
+          }
+        }
         console.log('scan済みの場合は結果サマリを取得する');
         this.setScanSummary(preRes.data);
         console.dir(this);
@@ -46,7 +62,7 @@ export default class MozillaObservatory {
             break;
           }
           // eslint-disable-next-line no-await-in-loop
-          await new Promise(r => setTimeout(r, 5000));
+          await new Promise(r => setTimeout(r, 10000));
         }
       }
       console.log('scanidから詳細結果を取得する');
