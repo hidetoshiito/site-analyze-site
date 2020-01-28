@@ -49,7 +49,7 @@
           <p>mozilla's result</p>
           <v-card :raised="fld_summary.raised" :elevation="fld_summary.elevation" :color="grade_color_mozilla" >
             <v-list-item>
-                <v-list-item-title class="display-2 font-weight-bold">RANK : {{mozilla_summary.grade}}</v-list-item-title>
+                <v-list-item-title class="display-2 font-weight-bold">Rank : {{mozilla_summary.grade}}</v-list-item-title>
             </v-list-item>
           </v-card>
           <v-card v-for="(value,key) in mozilla_results" :key="value.name">
@@ -68,11 +68,14 @@
 </template>
 
 <style scoped lang="scss">
-.bg-good {
-  background-color:deepskyblue;
-}
 .bg-bad {
-  background-color:pink;
+  background-color:lightpink;
+}
+.bg-good {
+  background-color:#c0ffb5; /* lightpinkを基準にしたヘクサード配色らしい */
+}
+.bg-verygood {
+  background-color:#b5fff4; /* lightpinkを基準にしたヘクサード配色らしい */
 }
 /* v-listのベース。左端のみ結果に応じた色付けを行うため左のみpadding */
 .vlist_base {
@@ -80,7 +83,7 @@
 }
 /* v-listのメイン */
 .vlist_content {
-  background-color:white;
+  background-color:snow;
 }
 
 </style>
@@ -127,7 +130,7 @@ export default {
       console.log('grade_color_mozilla start');
       // TODO: 適した色を考える
       const color = {
-        A: 'light-blue', B: 'pink', C: 'red', D: 'blue', E: 'yellow', F: 'purple',
+        A: '#a8ff99', B: '#99fff0', C: '#fff099', D: '#99a8ff', E: '#ff99a8', F: '#f099ff', // #ff99a8を基準にしたヘクサード配色
       };
       // A+, D- みたいな表記もあるのでアルファベットのみにする
       if (this.mozilla_summary.grade == null) {
@@ -193,7 +196,7 @@ export default {
       } if (score < 0) {
         return 'bg-bad';
       }
-      return '';
+      return 'bg-verygood';
     },
   },
 };
