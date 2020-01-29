@@ -5,9 +5,9 @@
       wrap
     >
       <v-flex mb-4>
-        <h1 class="display-2 font-weight-bold mb-3">
-          サイト診断
-        </h1>
+        <h3 class="display-5 font-weight-bold mb-3">
+          webページのセキュリティ設定をチェックします
+        </h3>
         <v-text-field
           v-model="target_site"
           :label="fld_site.label"
