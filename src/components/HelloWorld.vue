@@ -32,8 +32,8 @@
           </v-card>
           <!-- 結果詳細 -->
           <v-card v-for="(item, index) in nakcat_results.analize_names" :key="index">
-            <v-list-item three-line>
-              <v-list-item-content>
+            <v-list-item three-line class="vlist_base" :class="getClassOnScore(item.score)">
+              <v-list-item-content class="vlist_content">
                 <div class="headline mb-1">診断名: {{item.name}}</div>
                 <v-list-item-title class="mb-1">SCORE : {{item.score}}</v-list-item-title>
                 <v-list-item-subtitle>判定内容: {{item.reports}}</v-list-item-subtitle>
