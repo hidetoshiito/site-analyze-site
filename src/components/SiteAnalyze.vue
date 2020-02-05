@@ -10,6 +10,7 @@
         </h3>
         <v-text-field
           v-model="target_site"
+          :disabled="loading_all"
           :label="fld_site.label"
           :hint="fld_site.hint"
           :outlined="fld_site.outlined"
@@ -20,7 +21,7 @@
           診断
         </v-btn>
         <!-- 結果表示のアニメーション -->
-        <transition name="custom-classes-transition" mode="out-in" enter-active-class="animated bounce" leave-active-class="animated bounceOutRight">
+        <transition name="custom-classes-transition" enter-active-class="animated fadeInDown">
           <div v-if="loading_member.nakcat" key="scaning">
             <p><v-progress-circular color="primary" indeterminate></v-progress-circular> nakcat's scaning ...</p>
           </div>
@@ -42,7 +43,6 @@
                 </v-list-item-content>
               </v-list-item>
             </v-card>
-            <p>{{nakcat_results}}</p>
           </div>
         </transition>
         <transition name="fade">
